@@ -1,0 +1,551 @@
+<ng-container *ngIf="view() !== 'admin'; else adminShell">
+  <header class="storefront-header">
+    <div class="top-strip">
+      <span><img src="/caoxwear/icons/svg/white/truck.svg" alt=""> Envios a todo el Peru</span>
+      <span><img src="/caoxwear/icons/svg/white/bag.svg" alt=""> Pago 100% seguro</span>
+      <span><img src="/caoxwear/icons/svg/white/star.svg" alt=""> Sin reglas, solo expresion</span>
+    </div>
+
+    <div class="nav-bar">
+      <button class="logo-button" type="button" (click)="selectView('home')" aria-label="Inicio CaoxWear">
+        <img src="/caoxwear/brand/logo-white.png" alt="CaoxWear">
+      </button>
+
+      <nav class="main-nav">
+        <button type="button" [class.active]="view() === 'home'" (click)="selectView('home')">Inicio</button>
+        <button type="button" [class.active]="view() === 'catalog'" (click)="showCatalog()">Tienda</button>
+        <button type="button" (click)="selectCategory('Todas')">Colecciones</button>
+      </nav>
+
+      <div class="search-box">
+        <input type="search" placeholder="Buscar productos..." [(ngModel)]="search" (focus)="openSearchPanel()" (input)="openSearchPanel()" (blur)="closeSearchPanelSoon()" (keyup.enter)="searchCatalog()">
+        <button type="button" aria-label="Buscar productos" (click)="searchCatalog()">
+          <img src="/caoxwear/icons/svg/black/search.svg" alt=""> Buscar
+        </button>
+        <section class="search-panel" *ngIf="searchPanelOpen()">
+          <div>
+            <h3>Sugerencias</h3>
+            <button type="button" *ngFor="let product of productSuggestions()" (mousedown)="chooseProductSuggestion(product)">
+              <img [src]="product.imagen" [alt]="product.nombre">
+              <span>
+                <strong>{{ product.nombre }}</strong>
+                <small>{{ product.categoria.nombre }} / {{ product.sku || 'CW' }}</small>
+              </span>
+            </button>
+          </div>
+          <div>
+            <h3>Colecciones</h3>
+            <button type="button" *ngFor="let category of categorySuggestions()" (mousedown)="chooseCategorySuggestion(category)">
+              <img src="/caoxwear/icons/svg/black/tag.svg" alt="">
+              <span>
+                <strong>{{ category.nombre }}</strong>
+                <small>{{ category.descripcion || 'CaoxWear' }}</small>
+              </span>
+            </button>
+          </div>
+          <div>
+            <h3>Disponibles</h3>
+            <button type="button" *ngFor="let category of topCategories()" (mousedown)="chooseCategorySuggestion(category)">
+              <img src="/caoxwear/icons/svg/black/arrow_right.svg" alt="">
+              <span>
+                <strong>{{ category.nombre }}</strong>
+                <small>Ver productos</small>
+              </span>
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <div class="header-actions">
+        <button type="button" [class.active]="view() === 'auth'" (click)="selectView('auth')" *ngIf="!currentUser()">
+          <img src="/caoxwear/icons/svg/white/user.svg" alt=""> Cuenta
+        </button>
+        <button type="button" [class.active]="view() === 'orders'" (click)="selectView('orders')" *ngIf="currentUser()">
+          <img src="/caoxwear/icons/svg/white/orders.svg" alt=""> Pedidos
+        </button>
+        <button type="button" [class.active]="view() === 'admin'" (click)="selectView('admin')" *ngIf="currentUser()?.rol === 'ADMINISTRADOR'">
+          <img src="/caoxwear/icons/svg/white/dashboard.svg" alt=""> Admin
+        </button>
+        <button type="button" [class.active]="view() === 'cart'" (click)="selectView('cart')">
+          <img src="/caoxwear/icons/svg/white/cart.svg" alt=""> Carrito <span>{{ cart().length }}</span>
+        </button>
+        <button type="button" (click)="logout()" *ngIf="currentUser()">Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="storefront">
+    <p class="notice" *ngIf="message">{{ message }}</p>
+
+    <section class="home-page" *ngIf="view() === 'home'">
+      <div class="hero-stage">
+        <button class="hero-arrow left" type="button" aria-label="Anterior" (click)="previousBanner()">
+          <img src="/caoxwear/icons/svg/white/chevron_left.svg" alt="">
+        </button>
+        <button class="hero-media" type="button" (click)="bannerAction(activeBannerItem())">
+          <img [src]="activeBannerItem().imagen" [alt]="activeBannerItem().titulo">
+        </button>
+        <button class="hero-arrow right" type="button" aria-label="Siguiente" (click)="nextBanner()">
+          <img src="/caoxwear/icons/svg/white/arrow_right.svg" alt="">
+        </button>
+        <div class="slider-dots">
+          <button type="button" *ngFor="let banner of banners(); let i = index" [class.active]="activeBanner() === i" (click)="setBanner(i)"></button>
+        </div>
+      </div>
+
+      <section class="category-tiles">
+        <button type="button" *ngFor="let category of categories()" (click)="selectCategory(category.nombre)">
+          <span>{{ category.nombre }}</span>
+          <strong>Ver todo <img src="/caoxwear/icons/svg/white/arrow_right.svg" alt=""></strong>
+        </button>
+        <button type="button" (click)="selectCategory('Todas')">
+          <span>Todos</span>
+          <strong>Explorar <img src="/caoxwear/icons/svg/white/arrow_right.svg" alt=""></strong>
+        </button>
+      </section>
+
+      <section class="featured-row">
+        <div class="section-title">
+          <img src="/caoxwear/icons/svg/black/star.svg" alt="">
+          <h2>Destacados</h2>
+          <button class="link-icon" type="button" (click)="showCatalog()">Ver todo <img src="/caoxwear/icons/svg/black/arrow_right.svg" alt=""></button>
+        </div>
+        <div class="product-rail">
+          <article class="product-card" *ngFor="let product of featuredProducts()">
+            <button class="favorite" type="button" aria-label="Favorito">
+              <img src="/caoxwear/icons/svg/black/heart.svg" alt="">
+            </button>
+            <img [src]="product.imagen" [alt]="product.nombre">
+            <div>
+              <h3>{{ product.nombre }}</h3>
+              <p>{{ product.categoria.nombre }} / {{ product.tallas[0] || 'U' }}</p>
+              <strong>{{ product.precio | currency:'PEN':'symbol':'1.2-2' }}</strong>
+              <button class="dark-action icon-action" type="button" (click)="addToCart(product)">
+                <img src="/caoxwear/icons/svg/white/plus.svg" alt=""> Agregar
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <button class="drop-banner visual-banner" type="button" (click)="showCatalog()">
+        <img src="/caoxwear/banners/banner_strip_nuevos_1920x320.webp" alt="Nuevos lanzamientos CaoxWear">
+      </button>
+
+      <section class="culture-strip">
+        <div>
+          <h2>Somos freestyle, somos cultura</h2>
+          <p>Desde las calles de Lima, llevamos el freestyle y el graffiti a cada prenda.</p>
+        </div>
+      </section>
+    </section>
+
+    <section class="catalog-page" *ngIf="view() === 'catalog'">
+      <aside class="catalog-filters">
+        <div class="filter-title">
+          <h2>Filtros</h2>
+          <button type="button" (click)="clearFilters()">Limpiar</button>
+        </div>
+        <div class="filter-block delivery-filter">
+          <strong>Tipo de entrega</strong>
+          <label><input type="checkbox" checked disabled> Envio a domicilio</label>
+          <label><input type="checkbox" checked disabled> Retiro en punto</label>
+        </div>
+        <div class="filter-block">
+          <strong>Categoria</strong>
+          <button type="button" [class.active]="selectedCategory() === 'Todas'" (click)="selectCategory('Todas')">Todas</button>
+          <button type="button" *ngFor="let category of categories()" [class.active]="selectedCategory() === category.nombre" (click)="selectCategory(category.nombre)">
+            {{ category.nombre }}
+          </button>
+        </div>
+        <div class="filter-block">
+          <strong>Tallas</strong>
+          <div class="filter-chips">
+            <button type="button" [class.active]="selectedSize() === 'Todas'" (click)="selectSize('Todas')">Todas</button>
+            <button type="button" *ngFor="let size of availableSizes()" [class.active]="selectedSize() === size" (click)="selectSize(size)">
+              {{ size }}
+            </button>
+          </div>
+        </div>
+        <div class="filter-block">
+          <strong>Color</strong>
+          <div class="filter-chips">
+            <button type="button" [class.active]="selectedColor() === 'Todos'" (click)="selectColor('Todos')">Todos</button>
+            <button type="button" *ngFor="let color of availableColors()" [class.active]="selectedColor() === color" (click)="selectColor(color)">
+              {{ color }}
+            </button>
+          </div>
+        </div>
+        <div class="filter-block">
+          <strong>Precio maximo</strong>
+          <input type="range" min="50" max="500" step="5" [value]="maxPrice()" (input)="setMaxPrice($event)">
+          <span class="filter-price">Hasta {{ maxPrice() | currency:'PEN':'symbol':'1.0-0' }}</span>
+        </div>
+        <div class="filter-block">
+          <strong>Disponibilidad</strong>
+          <label class="check filter-check"><input type="checkbox" [checked]="stockOnly()" (change)="setStockOnly($event)"> Solo con stock</label>
+        </div>
+        <div class="filter-block">
+          <strong>Marca</strong>
+          <div class="brand-pill">CaoxWear</div>
+        </div>
+        <div class="mini-poster">
+          <span>Sin reglas</span>
+          <strong>Solo expresion.</strong>
+        </div>
+      </aside>
+
+      <section class="catalog-results">
+        <div class="catalog-head">
+          <div>
+            <p>Tienda CaoxWear</p>
+            <h1>{{ selectedCategory() === 'Todas' ? 'Todos los productos' : selectedCategory() }}</h1>
+          </div>
+          <div>
+            <span>{{ visibleProducts().length }} productos</span>
+          </div>
+        </div>
+
+        <div class="catalog-grid">
+          <article class="product-card catalog-card" *ngFor="let product of visibleProducts()">
+            <button class="favorite" type="button" aria-label="Favorito">
+              <img src="/caoxwear/icons/svg/black/heart.svg" alt="">
+            </button>
+            <img [src]="product.imagen" [alt]="product.nombre">
+            <div>
+              <h2>{{ product.nombre }}</h2>
+              <p>{{ product.descripcion }}</p>
+              <div class="tag-list">
+                <span *ngFor="let size of product.tallas">{{ size }}</span>
+                <span *ngFor="let color of product.colores">{{ color }}</span>
+              </div>
+              <small>Stock {{ product.stock }}</small>
+              <strong>{{ product.precio | currency:'PEN':'symbol':'1.2-2' }}</strong>
+              <button class="dark-action icon-action" type="button" (click)="addToCart(product)">
+                <img src="/caoxwear/icons/svg/white/plus.svg" alt=""> Agregar
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <section class="simple-page" *ngIf="view() === 'cart'">
+      <div class="simple-head">
+        <p>Compra</p>
+        <h1>Carrito</h1>
+      </div>
+      <p class="empty" *ngIf="cart().length === 0">Tu carrito esta vacio.</p>
+      <div class="line-item" *ngFor="let item of cart()">
+        <img [src]="item.product.imagen" [alt]="item.product.nombre">
+        <div>
+          <strong>{{ item.product.nombre }}</strong>
+          <p>{{ item.quantity }} x {{ item.product.precio | currency:'PEN':'symbol':'1.2-2' }}</p>
+        </div>
+        <button type="button" (click)="removeFromCart(item.product.id)">Eliminar</button>
+      </div>
+      <div class="summary">
+        <span>Total</span>
+        <strong>{{ total() | currency:'PEN':'symbol':'1.2-2' }}</strong>
+      </div>
+      <button class="primary-action wide" type="button" [disabled]="cart().length === 0" (click)="checkout()">Crear pedido</button>
+    </section>
+
+    <section class="auth-page" *ngIf="view() === 'auth'">
+      <div class="auth-card">
+        <img src="/caoxwear/brand/logo-black.png" alt="CaoxWear">
+        <div class="tabs">
+          <button type="button" [class.active]="mode() === 'login'" (click)="mode.set('login')">Login</button>
+          <button type="button" [class.active]="mode() === 'register'" (click)="mode.set('register')">Registro</button>
+        </div>
+        <input *ngIf="mode() === 'register'" placeholder="Nombres" [(ngModel)]="auth.nombres">
+        <input *ngIf="mode() === 'register'" placeholder="Apellidos" [(ngModel)]="auth.apellidos">
+        <input type="email" placeholder="Email" [(ngModel)]="auth.email">
+        <input type="password" placeholder="Password" [(ngModel)]="auth.password">
+        <button class="primary-action wide" type="button" (click)="mode() === 'login' ? login() : register()">
+          {{ mode() === 'login' ? 'Ingresar' : 'Crear cuenta' }}
+        </button>
+      </div>
+    </section>
+
+    <section class="simple-page" *ngIf="view() === 'orders'">
+      <div class="simple-head">
+        <p>Cuenta</p>
+        <h1>Mis pedidos</h1>
+      </div>
+      <p class="empty" *ngIf="orders().length === 0">No tienes pedidos registrados.</p>
+      <article class="order" *ngFor="let order of orders()">
+        <div>
+          <strong>Pedido #{{ order.id }}</strong>
+          <p>{{ order.fecha | date:'short' }} - {{ order.estado }}</p>
+        </div>
+        <strong>{{ order.total | currency:'PEN':'symbol':'1.2-2' }}</strong>
+      </article>
+    </section>
+  </main>
+
+  <footer class="store-footer">
+    <div>
+      <img src="/caoxwear/brand/logo-white.png" alt="CaoxWear">
+      <p>Freestyle is culture. Lima, Peru.</p>
+    </div>
+    <div>
+      <strong>Tienda</strong>
+      <span>Todos los productos</span>
+      <span>Nuevos lanzamientos</span>
+      <span>Hoodies</span>
+      <span>Tees</span>
+    </div>
+    <div>
+      <strong>Ayuda</strong>
+      <span>Preguntas frecuentes</span>
+      <span>Envios y entregas</span>
+      <span>Cambios y devoluciones</span>
+    </div>
+  </footer>
+</ng-container>
+
+<ng-template #adminShell>
+  <main class="admin-layout">
+    <aside class="admin-sidebar">
+      <img src="/caoxwear/brand/logo-white.png" alt="CaoxWear">
+      <nav>
+        <button type="button" [class.active]="adminTab() === 'overview'" (click)="selectAdminTab('overview')">
+          <img src="/caoxwear/icons/svg/white/dashboard.svg" alt=""> Dashboard
+        </button>
+        <button type="button" [class.active]="adminTab() === 'products'" (click)="selectAdminTab('products')">
+          <img src="/caoxwear/icons/svg/white/box.svg" alt=""> Productos
+        </button>
+        <button type="button" [class.active]="adminTab() === 'orders'" (click)="selectAdminTab('orders')">
+          <img src="/caoxwear/icons/svg/white/orders.svg" alt=""> Pedidos
+        </button>
+        <button type="button" [class.active]="adminTab() === 'banners'" (click)="selectAdminTab('banners')">
+          <img src="/caoxwear/icons/svg/white/ticket.svg" alt=""> Banners
+        </button>
+        <button type="button" (click)="selectView('home')">
+          <img src="/caoxwear/icons/svg/white/home.svg" alt=""> Volver tienda
+        </button>
+      </nav>
+      <p>Sin reglas,<br>solo expresion.</p>
+    </aside>
+
+    <section class="admin-main">
+      <header class="admin-topbar">
+        <div>
+          <h1>Bienvenido, <span>Admin!</span></h1>
+          <p>Gestiona catalogo, pedidos y banners activos.</p>
+        </div>
+        <div class="admin-actions">
+          <button type="button" (click)="selectView('home')">
+            <img src="/caoxwear/icons/svg/black/home.svg" alt=""> Tienda
+          </button>
+          <button type="button" (click)="logout()">Salir</button>
+        </div>
+        <button class="admin-user" type="button" (click)="logout()">AD</button>
+      </header>
+
+      <p class="notice admin-notice" *ngIf="message">{{ message }}</p>
+
+      <section class="admin-cards">
+        <article>
+          <img src="/caoxwear/icons/svg/black/bag.svg" alt="">
+          <span>Ventas totales</span>
+          <strong>{{ totalSales() | currency:'PEN':'symbol':'1.2-2' }}</strong>
+          <small>Desde pedidos reales</small>
+        </article>
+        <article>
+          <img src="/caoxwear/icons/svg/black/cart.svg" alt="">
+          <span>Pedidos</span>
+          <strong>{{ dashboard()['pedidos'] || 0 }}</strong>
+          <small>Registrados</small>
+        </article>
+        <article>
+          <img src="/caoxwear/icons/svg/black/box.svg" alt="">
+          <span>Productos</span>
+          <strong>{{ dashboard()['productos'] || 0 }}</strong>
+          <small>En catalogo</small>
+        </article>
+        <article>
+          <img src="/caoxwear/icons/svg/black/bell.svg" alt="">
+          <span>Stock bajo</span>
+          <strong>{{ lowStockProducts().length }}</strong>
+          <small>Revisar inventario</small>
+        </article>
+      </section>
+
+      <section class="dashboard-grid" *ngIf="adminTab() === 'overview'">
+        <article class="table-card">
+          <div class="card-head">
+            <h2>Pedidos recientes</h2>
+            <button class="link-icon" type="button" (click)="selectAdminTab('orders')">Ver todos <img src="/caoxwear/icons/svg/black/arrow_right.svg" alt=""></button>
+          </div>
+          <div class="order-row" *ngFor="let order of orders().slice(0, 5)">
+            <strong>#CW-{{ order.id }}</strong>
+            <span>{{ order.cliente || 'Cliente' }}</span>
+            <span>{{ order.fecha | date:'dd MMM yyyy' }}</span>
+            <span>{{ order.total | currency:'PEN':'symbol':'1.2-2' }}</span>
+            <small>{{ order.estado }}</small>
+          </div>
+          <p class="empty mini" *ngIf="orders().length === 0">Aun no hay pedidos recientes.</p>
+        </article>
+
+        <article class="best-card">
+          <div class="card-head">
+            <h2>Catalogo activo</h2>
+            <button class="link-icon" type="button" (click)="selectAdminTab('products')">Ver productos <img src="/caoxwear/icons/svg/black/arrow_right.svg" alt=""></button>
+          </div>
+          <div class="best-row" *ngFor="let product of products().slice(0, 4); let i = index">
+            <span>{{ i + 1 }}</span>
+            <img [src]="product.imagen" [alt]="product.nombre">
+            <div>
+              <strong>{{ product.nombre }}</strong>
+              <small>{{ product.colores[0] || 'Color' }} / {{ product.tallas[0] || 'Talla' }}</small>
+            </div>
+            <b>Stock {{ product.stock }}</b>
+          </div>
+        </article>
+
+        <article class="table-card alert-card">
+          <div class="card-head">
+            <h2>Alertas de inventario</h2>
+            <button class="link-icon" type="button" (click)="selectAdminTab('products')">Resolver <img src="/caoxwear/icons/svg/black/arrow_right.svg" alt=""></button>
+          </div>
+          <div class="best-row" *ngFor="let product of lowStockProducts().slice(0, 4); let i = index">
+            <span>{{ i + 1 }}</span>
+            <img [src]="product.imagen" [alt]="product.nombre">
+            <div>
+              <strong>{{ product.nombre }}</strong>
+              <small>{{ product.sku || 'CW' }} - {{ product.categoria.nombre }}</small>
+            </div>
+            <b>{{ product.stock }} uds.</b>
+          </div>
+          <p class="empty mini" *ngIf="lowStockProducts().length === 0">Inventario sin alertas.</p>
+        </article>
+
+        <article class="table-card banner-summary">
+          <div class="card-head">
+            <h2>Banners activos</h2>
+            <button class="link-icon" type="button" (click)="selectAdminTab('banners')">Gestionar <img src="/caoxwear/icons/svg/black/arrow_right.svg" alt=""></button>
+          </div>
+          <div class="banner-mini" *ngFor="let banner of adminBanners().slice(0, 3)">
+            <img [src]="banner.imagen" [alt]="banner.titulo">
+            <div>
+              <strong>{{ banner.titulo }}</strong>
+              <small>{{ banner.activo ? 'Visible en tienda' : 'Oculto' }}</small>
+            </div>
+          </div>
+          <p class="empty mini" *ngIf="adminBanners().length === 0">Aun no hay banners configurados.</p>
+        </article>
+      </section>
+
+      <section class="admin-panel" *ngIf="adminTab() === 'orders'">
+        <div class="card-head">
+          <h2>Pedidos</h2>
+          <span>{{ orders().length }} registrados</span>
+        </div>
+        <p class="empty mini" *ngIf="orders().length === 0">Aun no hay pedidos registrados.</p>
+        <article class="admin-order" *ngFor="let order of orders()">
+          <div>
+            <strong>#CW-{{ order.id }}</strong>
+            <small>{{ order.fecha | date:'dd MMM yyyy, HH:mm' }}</small>
+          </div>
+          <div>
+            <span>{{ order.cliente || 'Cliente' }}</span>
+            <small>{{ order.email || 'Sin email' }}</small>
+          </div>
+          <strong>{{ order.total | currency:'PEN':'symbol':'1.2-2' }}</strong>
+          <span class="status-pill">{{ order.estado }}</span>
+        </article>
+      </section>
+
+      <section class="admin-grid" *ngIf="adminTab() === 'products'">
+        <form class="admin-form" (ngSubmit)="saveProduct()">
+          <h2>Agregar producto</h2>
+          <label>SKU<input name="sku" placeholder="CW-041" [(ngModel)]="productForm.sku"></label>
+          <label>Nombre<input required name="nombre" [(ngModel)]="productForm.nombre"></label>
+          <label>Descripcion<textarea required name="descripcion" [(ngModel)]="productForm.descripcion"></textarea></label>
+          <label>Detalles adicionales<textarea name="detalles" placeholder="Material, corte, coleccion, cuidados..." [(ngModel)]="productForm.detalles"></textarea></label>
+          <div class="form-row">
+            <label>Precio<input required type="number" min="0" step="0.01" name="precio" [(ngModel)]="productForm.precio"></label>
+            <label>Stock<input required type="number" min="1" name="stock" [(ngModel)]="productForm.stock"></label>
+          </div>
+          <label>Categoria
+            <select required name="categoriaId" [(ngModel)]="productForm.categoriaId">
+              <option *ngFor="let category of categories()" [ngValue]="category.id">{{ category.nombre }}</option>
+            </select>
+          </label>
+          <div class="admin-option-group">
+            <strong>Tallas disponibles</strong>
+            <div class="option-chips">
+              <button type="button" *ngFor="let size of sizeOptions" [class.active]="isProductSizeSelected(size)" (click)="toggleProductSize(size)">
+                {{ size }}
+              </button>
+            </div>
+          </div>
+          <div class="admin-option-group">
+            <strong>Colores disponibles</strong>
+            <div class="option-chips color-options">
+              <button type="button" *ngFor="let color of colorOptions" [class.active]="isProductColorSelected(color)" (click)="toggleProductColor(color)">
+                {{ color }}
+              </button>
+            </div>
+          </div>
+          <label>URL de imagen<input name="imagen" [(ngModel)]="productForm.imagen"></label>
+          <label>Subir foto<input type="file" accept="image/*" (change)="handleProductImage($event)"></label>
+          <img class="preview" *ngIf="productForm.imagen" [src]="productForm.imagen" alt="Vista previa producto">
+          <button class="primary-action wide" type="submit">Agregar producto</button>
+        </form>
+
+        <div class="product-manager">
+          <div class="card-head">
+            <h2>Gestion de productos</h2>
+          </div>
+          <div class="manager-grid">
+            <article class="manager-product" *ngFor="let product of products()">
+              <img [src]="product.imagen" [alt]="product.nombre">
+              <span>{{ product.sku || 'Producto' }}</span>
+              <strong>{{ product.nombre }}</strong>
+              <span>{{ product.precio | currency:'PEN':'symbol':'1.2-2' }}</span>
+              <small>Activo</small>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-grid" *ngIf="adminTab() === 'banners'">
+        <form class="admin-form" (ngSubmit)="saveBanner()">
+          <h2>Agregar banner</h2>
+          <label>Titulo<input required name="titulo" [(ngModel)]="bannerForm.titulo"></label>
+          <label>Subtitulo<textarea required name="subtitulo" [(ngModel)]="bannerForm.subtitulo"></textarea></label>
+          <div class="form-row">
+            <label>Texto boton<input name="textoBoton" [(ngModel)]="bannerForm.textoBoton"></label>
+            <label>Orden<input type="number" min="1" name="orden" [(ngModel)]="bannerForm.orden"></label>
+          </div>
+          <label>Enlace<input name="enlace" placeholder="catalog o URL externa" [(ngModel)]="bannerForm.enlace"></label>
+          <label>URL de imagen<input name="bannerImagen" [(ngModel)]="bannerForm.imagen"></label>
+          <label>Subir imagen<input type="file" accept="image/*" (change)="handleBannerImage($event)"></label>
+          <label class="check"><input type="checkbox" name="activo" [(ngModel)]="bannerForm.activo"> Activo</label>
+          <img class="preview" *ngIf="bannerForm.imagen" [src]="bannerForm.imagen" alt="Vista previa banner">
+          <button class="primary-action wide" type="submit">Publicar banner</button>
+        </form>
+
+        <div class="banner-manager">
+          <div class="card-head">
+            <h2>Banners del carrusel</h2>
+          </div>
+          <article *ngFor="let banner of adminBanners()">
+            <img [src]="banner.imagen" [alt]="banner.titulo">
+            <div>
+              <strong>{{ banner.titulo }}</strong>
+              <p>Orden {{ banner.orden }} - {{ banner.activo ? 'Activo' : 'Oculto' }}</p>
+              <div class="row-actions">
+                <button type="button" (click)="toggleBanner(banner)">{{ banner.activo ? 'Ocultar' : 'Activar' }}</button>
+                <button type="button" class="danger" (click)="deleteBanner(banner.id)">Eliminar</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+  </main>
+</ng-template>

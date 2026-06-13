@@ -1,0 +1,27 @@
+:root {
+  color: #0d0d0f;
+  background: #f2f2f0;
+  font-family: "Bahnschrift Condensed", "Arial Narrow", "Roboto Condensed", "Segoe UI", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 12% 16%, rgba(13, 13, 15, 0.05), transparent 18%),
+    #f2f2f0;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+}

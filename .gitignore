@@ -1,0 +1,27 @@
+# Local runtime
+*.log
+*.out.log
+backend/caoxwear.db
+*.db
+
+# Verification screenshots
+caoxwear-*.png
+
+# Frontend generated files
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/coverage/
+
+# Backend generated files
+backend/target/
+
+# IDE and OS files
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Tooling scratch files
+.github/modernize/
