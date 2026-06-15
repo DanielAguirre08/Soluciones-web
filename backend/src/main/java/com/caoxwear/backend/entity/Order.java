@@ -4,6 +4,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,6 +29,15 @@ public class Order {
 
     private LocalDateTime fecha = LocalDateTime.now();
     private BigDecimal total = BigDecimal.ZERO;
+    private String clienteNombres;
+    private String clienteApellidos;
+    private String clienteEmail;
+    private String clienteTelefono;
+    private String direccionEnvio;
+    private String referenciaEnvio;
+    private String departamento;
+    private String provincia;
+    private String distrito;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus estado = OrderStatus.PENDIENTE;
@@ -35,6 +45,6 @@ public class Order {
     @ManyToOne(optional = false)
     private User usuario;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<OrderItem> detalles = new ArrayList<>();
 }

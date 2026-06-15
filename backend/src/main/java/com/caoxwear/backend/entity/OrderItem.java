@@ -10,6 +10,8 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Getter
 @Setter
@@ -22,8 +24,11 @@ public class OrderItem {
 
     private Integer cantidad;
     private BigDecimal precio;
+    private String talla;
+    private String color;
 
-    @ManyToOne(optional = false)
+    @NotFound(action = NotFoundAction.IGNORE)
+    @ManyToOne(optional = true)
     private Product producto;
 
     @JsonIgnore

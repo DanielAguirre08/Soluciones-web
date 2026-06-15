@@ -36,8 +36,8 @@ describe('App', () => {
 
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('img[alt="CaoxWear"]')).toBeTruthy();
-    expect(compiled.querySelector('.hero-media img')?.getAttribute('alt')).toContain('Freestyle is culture');
+    expect(compiled.querySelector('img[alt="Bambeli Denim Kids"]')).toBeTruthy();
+    expect(compiled.querySelector('.hero-media img')?.getAttribute('alt')).toContain('Hecho para jugar');
   });
 
   function flushCatalogRequests() {

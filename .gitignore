@@ -1,11 +1,11 @@
 # Local runtime
 *.log
 *.out.log
-backend/caoxwear.db
+backend/bambeli.db
 *.db
 
 # Verification screenshots
-caoxwear-*.png
+bambeli-*.png
 
 # Frontend generated files
 frontend/node_modules/

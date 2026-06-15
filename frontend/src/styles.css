@@ -1,18 +1,20 @@
 :root {
-  color: #0d0d0f;
-  background: #f2f2f0;
-  font-family: "Bahnschrift Condensed", "Arial Narrow", "Roboto Condensed", "Segoe UI", Arial, sans-serif;
+  color: #0b214a;
+  background: #ffffff;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  background: #ffffff;
+}
+
 body {
   margin: 0;
-  background:
-    radial-gradient(circle at 12% 16%, rgba(13, 13, 15, 0.05), transparent 18%),
-    #f2f2f0;
+  background: #ffffff;
 }
 
 button,

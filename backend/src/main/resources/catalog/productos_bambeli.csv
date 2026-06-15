@@ -1,0 +1,29 @@
+SKU,Nombre,Descripcion,Precio,Stock,Categoria,Tallas,Colores,Imagen
+BMB-001,Casaca Clasico,Casaca denim modelo Clasico para uso diario con acabado resistente,139.90,45,Casacas,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/CASACAS/27.png
+BMB-002,Casaca Crop,Casaca denim modelo Crop con corte moderno y comodo,129.90,42,Casacas,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/CASACAS/28.png
+BMB-003,Pantalon Santiago,Pantalon denim para nino modelo Santiago con bolsillos funcionales,119.90,50,Pantalones niño,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/PANTALONES_NIÑOS/21.png
+BMB-004,Pantalon Albeiro,Pantalon denim para nino modelo Albeiro con pretina comoda,119.90,48,Pantalones niño,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/PANTALONES_NIÑOS/22.png
+BMB-005,Pantalon Titi,Pantalon denim para nino modelo Titi resistente para jugar,119.90,46,Pantalones niño,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/PANTALONES_NIÑOS/23.png
+BMB-006,Baggy Estrella,Pantalon para nina modelo Baggy Estrella con calce amplio,129.90,52,Pantalones niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/PANTALONES_NIÑAS/1.png
+BMB-007,Baggy Georgina,Pantalon para nina modelo Baggy Georgina con estilo denim,129.90,52,Pantalones niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/PANTALONES_NIÑAS/2.png
+BMB-008,Baggy Daniella,Pantalon para nina modelo Baggy Daniella comodo y resistente,129.90,52,Pantalones niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/PANTALONES_NIÑAS/3.png
+BMB-009,Baggy Eva,Pantalon para nina modelo Baggy Eva de denim suave,129.90,50,Pantalones niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/PANTALONES_NIÑAS/4.png
+BMB-010,Baggy Coraly,Pantalon para nina modelo Baggy Coraly con acabado moderno,129.90,50,Pantalones niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/PANTALONES_NIÑAS/5.png
+BMB-011,Moon Amaiya,Pantalon para nina modelo Moon Amaiya con corte comodo,129.90,48,Pantalones niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/PANTALONES_NIÑAS/6.png
+BMB-012,Moon Margarita,Pantalon para nina modelo Moon Margarita para cada aventura,129.90,48,Pantalones niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/PANTALONES_NIÑAS/7.png
+BMB-013,Sirena Ivanna,Pantalon para nina modelo Sirena Ivanna con detalle especial,129.90,46,Pantalones niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/PANTALONES_NIÑAS/8.png
+BMB-014,Short Alonso,Short denim para nino modelo Alonso fresco y resistente,89.90,60,Shorts niño,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/SHORTS_NIÑOS/24.png
+BMB-015,Short Sandro,Short denim para nino modelo Sandro con calce comodo,89.90,58,Shorts niño,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/SHORTS_NIÑOS/25.png
+BMB-016,Short Erick,Short denim para nino modelo Erick listo para jugar,89.90,56,Shorts niño,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/SHORTS_NIÑOS/26.png
+BMB-017,Falda Short Lua,Falda short para nina modelo Lua con movimiento comodo,94.90,44,Falda short niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/FALDAS_NIÑAS/9.png
+BMB-018,Falda Short Elif,Falda short para nina modelo Elif en denim resistente,94.90,44,Falda short niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/FALDAS_NIÑAS/10.png
+BMB-019,Falda Short Catalina,Falda short para nina modelo Catalina facil de combinar,94.90,42,Falda short niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/FALDAS_NIÑAS/11.png
+BMB-020,Falda Short Valeria,Falda short para nina modelo Valeria con estilo diario,94.90,42,Falda short niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/FALDAS_NIÑAS/12.png
+BMB-021,Falda Short Paola,Falda short para nina modelo Paola con denim suave,94.90,40,Falda short niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/FALDAS_NIÑAS/13.png
+BMB-022,Falda Short Marta,Falda short para nina modelo Marta comoda y versatil,94.90,40,Falda short niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/FALDAS_NIÑAS/14.png
+BMB-023,Short Marinet,Short denim para nina modelo Marinet con detalle delicado,99.90,60,Shorts niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/SHORTS_NIÑAS/15.png
+BMB-024,Short Karla,Short denim para nina modelo Karla fresco y comodo,99.90,58,Shorts niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/SHORTS_NIÑAS/16.png
+BMB-025,Short Valentina,Short denim para nina modelo Valentina para el dia a dia,99.90,56,Shorts niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/SHORTS_NIÑAS/17.png
+BMB-026,Short Star,Short denim para nina modelo Star con estilo divertido,99.90,54,Shorts niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/SHORTS_NIÑAS/18.png
+BMB-027,Short Vania,Short denim para nina modelo Vania con acabado moderno,99.90,52,Shorts niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/SHORTS_NIÑAS/19.png
+BMB-028,Short Brillito,Short denim para nina modelo Brillito con detalles especiales,99.90,50,Shorts niña,"4, 6, 8, 10, 12, 14, 16","Negro, Azul, Intermedio, Hielo",CATALOGO/SHORTS_NIÑAS/20.png

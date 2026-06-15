@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 
 public record OrderLineRequest(
         @NotNull Long productId,
-        @Min(1) Integer cantidad
+        @Min(1) Integer cantidad,
+        String talla,
+        String color
 ) {
 }

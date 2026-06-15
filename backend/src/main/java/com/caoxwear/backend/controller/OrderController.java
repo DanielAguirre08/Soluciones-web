@@ -45,8 +45,12 @@ public class OrderController {
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     public Order updateStatus(@PathVariable Long id, @RequestParam OrderStatus estado) {
-        Order order = orderRepository.findById(id).orElseThrow();
-        order.setEstado(estado);
-        return orderRepository.save(order);
+        return orderService.updateStatus(id, estado);
+    }
+
+    @PutMapping("/{id}/status")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    public Order updateStatusPath(@PathVariable Long id, @RequestParam OrderStatus estado) {
+        return orderService.updateStatus(id, estado);
     }
 }

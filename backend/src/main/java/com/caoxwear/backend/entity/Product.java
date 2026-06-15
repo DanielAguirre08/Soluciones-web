@@ -29,6 +29,7 @@ public class Product {
     private String descripcion;
     private BigDecimal precio;
     private Integer stock;
+    private Boolean nuevo = false;
 
     @Lob
     private String imagen;

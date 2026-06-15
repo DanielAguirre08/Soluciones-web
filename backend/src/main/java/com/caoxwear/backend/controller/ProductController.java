@@ -23,8 +23,15 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public Page<Product> list(@RequestParam(required = false) String search, Pageable pageable) {
-        return productService.list(search, pageable);
+    public Page<Product> list(@RequestParam(required = false) String search,
+            @RequestParam(required = false) String category,
+            @RequestParam(name = "talla", required = false) String size,
+            @RequestParam(required = false) String color,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(defaultValue = "false") boolean stockOnly,
+            @RequestParam(defaultValue = "false") boolean nuevoOnly,
+            Pageable pageable) {
+        return productService.list(search, category, size, color, maxPrice, stockOnly, nuevoOnly, pageable);
     }
 
     @GetMapping("/{id}")
