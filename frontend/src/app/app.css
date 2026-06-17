@@ -1216,6 +1216,17 @@ label {
   width: 20px;
 }
 
+.admin-row-actions {
+  align-items: center;
+  display: inline-flex;
+  gap: 4px;
+}
+
+.icon-only.danger:hover {
+  background: #fdecec;
+  border-radius: 8px;
+}
+
 .clear-cart {
   align-items: center;
   background: transparent;

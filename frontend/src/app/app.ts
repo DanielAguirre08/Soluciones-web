@@ -734,6 +734,23 @@ export class App implements OnInit, OnDestroy {
     this.productForm = this.emptyProductForm();
   }
 
+  deleteProduct(product: Product) {
+    if (!confirm(`¿Eliminar el producto "${product.nombre}"? Esta accion no se puede deshacer.`)) {
+      return;
+    }
+    this.http.delete<void>(`${this.api}/products/${product.id}`, { headers: this.headers() }).subscribe({
+      next: () => {
+        this.message = `${product.nombre} fue eliminado del catalogo.`;
+        if (this.editProductId() === product.id) {
+          this.resetProductForm();
+        }
+        this.loadCatalog();
+        this.loadAdmin();
+      },
+      error: () => this.message = 'No se pudo eliminar el producto. Verifica que estes como admin.'
+    });
+  }
+
   logout() {
     localStorage.removeItem(USER_KEY);
     this.currentUser.set(null);

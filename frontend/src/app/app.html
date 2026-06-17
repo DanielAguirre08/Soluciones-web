@@ -634,7 +634,10 @@
                 <span>{{ product.tallas.join(' - ') }}</span>
                 <span class="admin-colors"><i *ngFor="let color of product.colores.slice(0, 2)" [style.background]="colorHex(color)"></i></span>
                 <span class="status-pill" [class.warning]="product.stock <= 10">{{ product.stock <= 0 ? 'Agotado' : (product.stock <= 10 ? 'Bajo stock' : 'Activo') }}</span>
-                <button class="icon-only" type="button" (click)="editProduct(product)"><img src="/assets/icons/svg/black/edit.svg" alt=""></button>
+                <span class="admin-row-actions">
+                  <button class="icon-only" type="button" title="Editar" (click)="editProduct(product)"><img src="/assets/icons/svg/black/edit.svg" alt="Editar"></button>
+                  <button class="icon-only danger" type="button" title="Eliminar" (click)="deleteProduct(product)"><img src="/assets/icons/svg/black/trash.svg" alt="Eliminar"></button>
+                </span>
               </div>
             </div>
           </section>
